@@ -19,6 +19,11 @@ function [X_12, X_21, P_12, P_21, E_vec] = symmetric_volume_map(Mesh, alpha, gam
 % P_12: n1xn2 constrained map from Mesh_1 to Mesh_2
 % P_21: n2xn1 constrained map from Mesh_2 to Mesh_1
 % E_vec: vector of energy values during the optimization.
+
+%% Path for packaged functions
+sub_folders = genpath(pwd);
+addpath(sub_folders);
+
 %% Optimization settings and initial maps
 fixBoundary = lock_bd;
 %Check if the map is already initialized
@@ -202,6 +207,9 @@ for optimization_counter = count_start : max_optimization_count
     end
 end
 timeElapsed = toc(tStart)
+
+%% Remove sub folders from path
+rmpath(sub_folders);
 end
 
 
