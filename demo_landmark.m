@@ -1,5 +1,9 @@
 %% This demo demonstrates mapping using provided data with landmarks and mesh matlab files given.
 clear all; clc; close all;
+Setup.compile_dependencies();
+return
+
+
 % data full path
 data_path = './data/centaur_0_to_centaur_1/';
 %% Map parameters
