@@ -8,9 +8,10 @@ function compile_dependencies()
     vcpkg_exe = install_vcpkg(libs_dir);
     install_lapack_blas(libs_dir, vcpkg_exe);
     install_gptoolbox(libs_dir, vcpkg_exe);
-    end
+end
     
-    function install_eigen(libs_dir)
+
+function install_eigen(libs_dir)
     %INSTALL_EIGEN git clone v3.4 of Eigen and use it to compile SVD
     cwd = pwd();
     cd (libs_dir);
