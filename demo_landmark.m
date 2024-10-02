@@ -12,7 +12,7 @@ lock_bd = false;
 %% Load inputs
 % load the mesh
 Mesh = load([data_path,'meshes.mat']);
-Mesh=Mesh.Mesh;
+Mesh = Mesh.Mesh;
 % load the landmarks
 landmarks = load([data_path,'landmarks.mat']);
 landmarks = landmarks.landmarks;
