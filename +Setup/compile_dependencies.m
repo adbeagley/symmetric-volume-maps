@@ -10,7 +10,7 @@ function compile_dependencies()
     install_gptoolbox(libs_dir, vcpkg_exe);
     end
     
-    function install_eigen(libs_dir)
+function install_eigen(libs_dir)
     %INSTALL_EIGEN git clone v3.4 of Eigen and use it to compile SVD
     cwd = pwd();
     cd (libs_dir);
