@@ -1,7 +1,7 @@
 %% This demo demonstrates mapping using provided data with landmarks and mesh matlab files given.
 clear all; clc; close all;
 
-%Setup.compile_dependencies();
+Setup.compile_dependencies();
 %return
 
 % data full path
@@ -23,3 +23,7 @@ landmarks = landmarks.landmarks;
 %% Map!
 [X_12, X_21, P_12, P_21, E] = symmetric_volume_map(Mesh, alpha, gamma, beta, landmarks, energy, lock_bd, tet_uninv_nring);
 
+
+timestamp = replace(string(datetime('now')), [" ", "-", ":"], "_");
+workspace_name = sprintf("%s_%s", mfilename(), t);
+save(workspace_name);
