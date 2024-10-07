@@ -1,8 +1,8 @@
 %% This demo demonstrates mapping using provided data with landmarks and mesh matlab files given.
 clear all; clc; close all;
-Setup.compile_dependencies();
-return
 
+%Setup.compile_dependencies();
+%return
 
 % data full path
 data_path = './data/centaur_0_to_centaur_1/';
@@ -22,3 +22,4 @@ landmarks = load([data_path,'landmarks.mat']);
 landmarks = landmarks.landmarks;
 %% Map!
 [X_12, X_21, P_12, P_21, E] = symmetric_volume_map(Mesh, alpha, gamma, beta, landmarks, energy, lock_bd, tet_uninv_nring);
+
