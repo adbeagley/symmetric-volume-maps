@@ -1,7 +1,10 @@
 %% This demo demonstrates mapping using provided data with landmarks and mesh matlab files given.
 clear all; clc; close all;
 
-Setup.compile_dependencies();
+compile = false;
+if compile
+    Setup.compile_dependencies();
+end
 
 % data full path
 data_path = './data/centaur_0_to_centaur_1/';
@@ -22,7 +25,10 @@ landmarks = landmarks.landmarks;
 %% Map!
 [X_12, X_21, P_12, P_21, E] = symmetric_volume_map(Mesh, alpha, gamma, beta, landmarks, energy, lock_bd, tet_uninv_nring);
 
+VertexMap = compute_vertex_map(X_12, X_21, P_12);
+writematrix(VertexMap.source, "SourceVertices.csv");
+writematrix(VertexMap.targets, "TargetPositions.csv");
 
 timestamp = replace(string(datetime('now')), [" ", "-", ":"], "_");
-workspace_name = sprintf("%s_%s", mfilename(), t);
+workspace_name = sprintf("%s_%s", mfilename(), timestamp);
 save(workspace_name);
