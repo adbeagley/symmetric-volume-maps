@@ -4,6 +4,8 @@ function compile_dependencies()
 
     cwd = pwd();
     libs_dir = fullfile(cwd,'libs');
+
+    gpbuild_dir = fullfile(libs_dir, "gptoolbox", "mex", "build");
     compile_svd(libs_dir);
     install_gptoolbox(libs_dir);
     cd (cwd);
@@ -64,7 +66,6 @@ function eigen_dir = fetch_eigen(libs_dir)
 end
 
 
-
 function install_gptoolbox(libs_dir)
     %INSTALL_GPTOOLBOX Summary of this function goes here
     % Instructions from here:
@@ -77,6 +78,7 @@ function install_gptoolbox(libs_dir)
     compile_toolbox_fast_marching(gptoolbox_dir)
     cd (cwd);
 end
+
 
 function gptoolbox_dir = fetch_gptoolbox(libs_dir)
     % Fetch gptoolbox from github
@@ -175,6 +177,52 @@ function compile_gptoolbox_mex(gptoolbox_dir)
     system("cmake ..","-echo");
     !cmake --build . --config Release
 
+    copy_dll_deps(build_dir);
+
+    cd (cwd);
+end
+
+
+function copy_dll_deps(gpbuild_dir)
+    % Copy built dlls to mex folder so Matlab can find them
+    gmp_dll = "libgmp-10.dll";
+    mpfr_dll = "libmpfr-4.dll";
+    dll_list = [gmp_dll, mpfr_dll];
+
+    deps_dir = fullfile(gpbuild_dir, "_deps");
+    [mex_dir, ~, ~] = fileparts(gpbuild_dir);
+
+    if not(isfolder(deps_dir))
+        disp("WARNING: build dependencies could not be found")
+        return
+    end
+
+    for i=1:length(dll_list)
+        dll_name = dll_list(i);
+        dll_path = find_fpath(gpbuild_dir, dll_name);
+        if dll_path == -1
+            continue
+        end
+        copyfile(dll_path, mex_dir);
+        fprintf("Copied %s to mex folder\n", dll_name);
+    end
+end
+
+
+function fpath = find_fpath(top_dir, file_name)
+    % Find the path to the file specified by file_name and containing
+    % within top_dir or one of it's subfolders.
+    cwd = pwd();
+    cd (top_dir);
+    file_list = dir(fullfile(top_dir, "**", file_name));
+
+    if not(isstruct(file_list))
+        disp(sprinft("WARNING: %s is not unique", file_name));
+        fpath = -1;
+        return
+    end
+
+    fpath = fullfile(file_list(1).folder, file_list(1).name);
     cd (cwd);
 end
 
